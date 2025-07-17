@@ -5,6 +5,8 @@ import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
+import RoleSwitcher from "../components/common/RoleSwitcher";
+import AddUserType from "../components/common/AddUserType";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -85,14 +87,14 @@ const AppHeader: React.FC = () => {
 
           <Link to="/" className="lg:hidden">
             <img
-              className="dark:hidden"
-              src="./images/logo/logo.svg"
-              alt="Logo"
+              className="h-10 dark:hidden"
+              src="/images/logo/athlos-logo.svg"
+              alt="Athlos"
             />
             <img
-              className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
-              alt="Logo"
+              className="hidden h-10 dark:block"
+              src="/images/logo/athlos-logo-dark.svg"
+              alt="Athlos"
             />
           </Link>
 
@@ -161,6 +163,10 @@ const AppHeader: React.FC = () => {
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
             <NotificationDropdown />
+            {/* <!-- Role Switcher --> */}
+            <RoleSwitcher />
+            {/* <!-- Add User Type --> */}
+            <AddUserType />
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}

@@ -15,4 +15,16 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    host: true, // Necessary to allow access from mobile devices on same network
+    port: 5173, // Default Vite port
+    cors: true, // Enable CORS for all origins
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
 });

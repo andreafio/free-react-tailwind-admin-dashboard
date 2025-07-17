@@ -25,6 +25,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
     setTheme(initialTheme);
     setIsInitialized(true);
+
+    // Forza l'applicazione immediata del tema chiaro per evitare che l'app appaia in dark anche per un istante
+    document.documentElement.classList.remove("dark");
   }, []);
 
   useEffect(() => {

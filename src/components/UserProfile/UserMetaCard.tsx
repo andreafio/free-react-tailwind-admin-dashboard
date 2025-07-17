@@ -3,13 +3,44 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { useUser } from "../../hooks/useUser";
+import { useEffect, useState } from "react";
 
 export default function UserMetaCard() {
   const { isOpen, openModal, closeModal } = useModal();
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
+  const { user, loading, fetchUser } = useUser();
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    location: ''
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        role: user.role || '',
+        location: user.location || ''
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleSave = async () => {
+    try {
+      // Qui implementeremo la logica per salvare i dati dell'utente
+      // Per ora è solo un placeholder
+      console.log("Saving changes...", formData);
+      closeModal();
+      // Dopo il salvataggio, aggiorniamo i dati dell'utente
+      await fetchUser(true);
+    } catch (error) {
+      console.error("Errore durante il salvataggio:", error);
+    }
   };
   return (
     <>
@@ -17,19 +48,29 @@ export default function UserMetaCard() {
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
             <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-              <img src="/images/user/owner.jpg" alt="user" />
+              {loading ? (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                  <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ) : user?.profile_image ? (
+                <img src={user.profile_image} alt={user.name} />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-brand-100 text-navy-800 text-2xl font-bold font-montserrat">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </div>
+              )}
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                Musharof Chowdhury
+                {loading ? 'Caricamento...' : user?.name || 'Utente'}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Team Manager
+                  {loading ? 'Caricamento...' : user?.role || 'Atleta'}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Arizona, United States
+                  {loading ? 'Caricamento...' : user?.location || 'Italia'}
                 </p>
               </div>
             </div>
